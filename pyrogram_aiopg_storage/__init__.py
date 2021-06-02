@@ -106,7 +106,7 @@ class PostgreSQLStorage(Storage):
         )
 
         self._t_peers = Table(
-            f'peers_{self._session_id}', self._meta,
+            'peers', self._meta,
 
             Column('id', BIGINT),
             Column('access_hash', BIGINT),
@@ -114,18 +114,12 @@ class PostgreSQLStorage(Storage):
             Column('username', String),
             Column('phone_number', String),
             Column('last_update_on', Integer),
-            PrimaryKeyConstraint('id', name=f'pk_peers_{self._session_id}')
+            PrimaryKeyConstraint('id', name=f'pk_peers')
         )
 
         # indexes
-        self._i_peers_username = Index(
-            f'idx_peers_username_{self._session_id}',
-            self._t_peers.c.username
-        )
-        self._i_peers_phone_number = Index(
-            f'idx_peers_phone_number_{self._session_id}',
-            self._t_peers.c.phone_number
-        )
+        self._i_peers_username = Index('idx_peers_username')
+        self._i_peers_phone_number = Index('idx_peers_phone_number')
 
     async def open(self):
         """ Initialize pyrogram session"""
